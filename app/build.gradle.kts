@@ -60,4 +60,5 @@ dependencies {
     implementation("io.ktor:ktor-client-android:2.3.9")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.9")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.9")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
 }
