@@ -1,6 +1,5 @@
 package com.example.cooljetpackweatherapp.data
 
-import android.net.http.HttpResponseCache.install
 import dam_A51736.coolweatherapp.WeatherData
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -25,6 +24,8 @@ object WeatherApiClient {
             append("https://api.open-meteo.com/v1/forecast?")
             append("latitude=${lat}&longitude=${lon}&")
             append("current_weather=true&")
+            append("timezone=auto&") //Permite que a API retorne a hora correta das coordenadas inseridas
+            append("daily=sunrise,sunset&") //Recebe as horas de nascer e pôr do sol
             append("hourly=temperature_2m,weathercode,pressure_msl,windspeed_10m")
         }
         System.out.println("Getting URL: $reqString")

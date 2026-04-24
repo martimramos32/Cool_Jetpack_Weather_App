@@ -25,7 +25,6 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val configuration = LocalConfiguration.current
     val day = true // Must change this in the future
 
-    // Importa a lógica do mapa de códigos para imagens já criado no trabalho anterior no ficheiro WeatherData.kt do package data
     val mapt = getWeatherCodeMap()
     val wCode = mapt[weathercode]
     val wImage = when (wCode) {
