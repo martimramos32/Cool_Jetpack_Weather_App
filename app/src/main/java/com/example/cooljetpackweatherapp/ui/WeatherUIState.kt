@@ -9,5 +9,4 @@ data class WeatherUIState(
     val windspeed: Float = 0.0f,
     val weathercode: Int = 0,
     val time: String = "--:--",
-    val isDay: Boolean = true // Variável extra para usar com a lógica do nascer/pôr do sol
 )
