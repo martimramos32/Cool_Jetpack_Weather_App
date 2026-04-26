@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import com.example.cooljetpackweatherapp.R
 
 //Função responsável por apresentar o cartão das coordenadas
 @Composable
@@ -35,7 +37,7 @@ fun CoordinatesCard(
             OutlinedTextField(
                 value = latitude,
                 onValueChange = onLatitudeChange,
-                label = { Text("Latitude") },
+                label = { Text(stringResource(R.string.latitude_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
             )
@@ -43,14 +45,14 @@ fun CoordinatesCard(
             OutlinedTextField(
                 value = longitude,
                 onValueChange = onLongitudeChange,
-                label = { Text("Longitude") },
+                label = { Text(stringResource(R.string.longitude_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
 
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onUpdateButtonClick) {
-                Text("Atualizar")
+                Text(stringResource(R.string.update_button))
             }
         }
     }

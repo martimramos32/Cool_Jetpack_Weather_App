@@ -6,9 +6,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cooljetpackweatherapp.R
 
 @Composable
 fun WeatherDetails(windSpeed: Float, windDirection: Int, seaLevelPressure: Float) {
@@ -24,9 +26,9 @@ fun WeatherDetails(windSpeed: Float, windDirection: Int, seaLevelPressure: Float
                 .fillMaxWidth()
         ) {
             // Chamamos a linha individual dos dados recebidos
-            WeatherRowItem(label = "Velocidade do Vento", value = "$windSpeed km/h")
-            WeatherRowItem(label = "Direção do Vento", value = "$windDirection º")
-            WeatherRowItem(label = "Pressão Atmosférica", value = "$seaLevelPressure hPa")
+            WeatherRowItem(label = stringResource(R.string.wind_label), value = "$windSpeed km/h")
+            WeatherRowItem(label = stringResource(R.string.direction_label), value = "$windDirection º")
+            WeatherRowItem(label = stringResource(R.string.pressure_label), value = "$seaLevelPressure hPa")
         }
     }
 }
