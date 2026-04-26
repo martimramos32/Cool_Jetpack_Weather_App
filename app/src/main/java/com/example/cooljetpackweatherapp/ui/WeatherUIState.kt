@@ -1,12 +1,14 @@
 package com.example.cooljetpackweatherapp.ui
 
+//Classe responsável por guardar os dados da UI
 data class WeatherUIState(
-    val latitude: Float = 38.7223f, // Coordenadas iniciais (ex: Lisboa)
-    val longitude: Float = -9.1393f,
-    val temperature: Float = 0.0f,
-    val seaLevelPressure: Float = 0.0f,
-    val winddirection: Int = 0,
-    val windspeed: Float = 0.0f,
+    // Dados iniciais hardcoded para Lisboa para quando a aplicação inicia pela primeira vez
+    val latitude: String = "38.76",
+    val longitude: String = "-9.12",
+    val temperature: Float = 15.9f,
+    val seaLevelPressure: Float = 1026.4f,
+    val winddirection: Int = 214,
+    val windspeed: Float = 13.0f,
     val weathercode: Int = 0,
     val time: String = "--:--",
 )

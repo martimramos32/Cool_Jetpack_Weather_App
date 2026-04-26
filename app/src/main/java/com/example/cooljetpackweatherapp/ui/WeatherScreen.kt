@@ -1,14 +1,24 @@
 package com.example.cooljetpackweatherapp.ui
 
 import android.content.res.Configuration
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import dam_A51736.coolweatherapp.WMO_WeatherCode
-import dam_A51736.coolweatherapp.getWeatherCodeMap
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cooljetpackweatherapp.viewmodel.WeatherViewModel
+import dam_A51736.coolweatherapp.WMO_WeatherCode
+import dam_A51736.coolweatherapp.getWeatherCodeMap
 
+
+//Função responsável por apresentar a UI no dispositivo
 @Composable
 fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val weatherUIState by weatherViewModel.uiState.collectAsState()
@@ -43,6 +53,7 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val context = LocalContext.current
     val wIcon = context.resources.getIdentifier(wImage, "drawable", context.packageName)
 
+    //Se o dispositivo estiver em modo paisagem chama a função LandscapeWeatherUI, caso esteja em modo retrato chama a função PortraitWeatherUI
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         LandscapeWeatherUI(
             wIcon = wIcon,
@@ -54,12 +65,8 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
             weathercode = weathercode,
             seaLevelPressure = seaLevelPressure,
             time = time,
-            onLatitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let { weatherViewModel.updateLatitude(it) }
-            },
-            onLongitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let { weatherViewModel.updateLongitude(it) }
-            },
+            onLatitudeChange = { newValue -> weatherViewModel.updateLatitude(newValue) },
+            onLongitudeChange = { newValue -> weatherViewModel.updateLongitude(newValue)},
             onUpdateButtonClick = { weatherViewModel.fetchWeather() }
         )
     } else {
@@ -73,31 +80,53 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
             weathercode = weathercode,
             seaLevelPressure = seaLevelPressure,
             time = time,
-            onLatitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let { weatherViewModel.updateLatitude(it) }
-            },
-            onLongitudeChange = { newValue ->
-                newValue.toFloatOrNull()?.let { weatherViewModel.updateLongitude(it) }
-            },
+            onLatitudeChange = { newValue -> weatherViewModel.updateLatitude(newValue) },
+            onLongitudeChange = { newValue -> weatherViewModel.updateLongitude(newValue)},
             onUpdateButtonClick = { weatherViewModel.fetchWeather() }
         )
     }
 }
 
+//Função responsável por apresentar a UI no modo retrato
 @Composable
 fun PortraitWeatherUI(
-    wIcon: Int, latitude: Float, longitude: Float, temperature: Float,
+    wIcon: Int, latitude: String, longitude: String, temperature: Float,
     windSpeed: Float, windDirection: Int, weathercode: Int,
     seaLevelPressure: Float, time: String,
     onLatitudeChange: (String) -> Unit, onLongitudeChange: (String) -> Unit,
     onUpdateButtonClick: () -> Unit
 ) {
-    // ToDo: Desenhar a interface em modo retrato
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()), // Permite deslizar o ecrã
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        //Ícone do tempo, temperatura e hora (última modificação)
+        WeatherCard(temperature = temperature, wIcon = wIcon, time = time)
+
+        //O cartão das coordenadas latitude e longitude
+        CoordinatesCard(
+            latitude = latitude,
+            longitude = longitude,
+            onLatitudeChange = onLatitudeChange,
+            onLongitudeChange = onLongitudeChange,
+            onUpdateButtonClick = onUpdateButtonClick
+        )
+
+        //O cartão com os detalhes recebidos da API
+        WeatherDetails(
+            windSpeed = windSpeed,
+            windDirection = windDirection,
+            seaLevelPressure = seaLevelPressure
+        )
+    }
 }
 
+//Função responsável por apresentar a UI no modo paisagem
 @Composable
 fun LandscapeWeatherUI(
-    wIcon: Int, latitude: Float, longitude: Float, temperature: Float,
+    wIcon: Int, latitude: String, longitude: String, temperature: Float,
     windSpeed: Float, windDirection: Int, weathercode: Int,
     seaLevelPressure: Float, time: String,
     onLatitudeChange: (String) -> Unit, onLongitudeChange: (String) -> Unit,

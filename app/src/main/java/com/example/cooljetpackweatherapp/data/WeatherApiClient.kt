@@ -8,6 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
+//Objeto em Kotlin que permite fazer os devidos requests à API
 object WeatherApiClient {
     private val client = HttpClient {
         install(ContentNegotiation) {
