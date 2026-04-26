@@ -11,4 +11,5 @@ data class WeatherUIState(
     val windspeed: Float = 13.0f,
     val weathercode: Int = 0,
     val time: String = "--:--",
+    val isDay: Boolean = true //Esta variável vai mudar dinamicamente consoante a hora atual na localização pesquisada
 )

@@ -33,7 +33,8 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val time = weatherUIState.time
 
     val configuration = LocalConfiguration.current
-    val day = true // Must change this in the future
+    //val day = true // Must change this in the future
+    val day = weatherUIState.isDay
 
     val mapt = getWeatherCodeMap()
     val wCode = mapt[weathercode]

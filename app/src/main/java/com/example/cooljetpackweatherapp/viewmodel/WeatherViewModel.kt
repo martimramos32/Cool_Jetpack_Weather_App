@@ -36,6 +36,16 @@ class WeatherViewModel : ViewModel() {
             val data = WeatherApiClient.getWeather(latFloat, lonFloat)
 
             if (data != null) {
+                //Guardar a hora atual
+                val horaAtual = data.current_weather.time
+
+                //Guardar a hora do nascer e pôr do sol (pegamos no primeiro valor da lista que corresponde ao dia de hoje)
+                val horaNascerSol = data.daily.sunrise.firstOrNull() ?: ""
+                val horaPorSol = data.daily.sunset.firstOrNull() ?: ""
+
+                //É de dia se a hora atual for maior ou igual ao nascer do sol e menor que o pôr do sol
+                val estaDeDia = horaAtual >= horaNascerSol && horaAtual < horaPorSol
+
                 _uiState.update { currentState ->
                     currentState.copy(
                         temperature = data.current_weather.temperature,
@@ -43,7 +53,8 @@ class WeatherViewModel : ViewModel() {
                         winddirection = data.current_weather.winddirection,
                         weathercode = data.current_weather.weathercode,
                         time = data.current_weather.time,
-                        seaLevelPressure = data.hourly.pressure_msl.firstOrNull()?.toFloat() ?: 0.0f
+                        seaLevelPressure = data.hourly.pressure_msl.firstOrNull()?.toFloat() ?: 0.0f,
+                        isDay = estaDeDia //Guardar o resultado na variavel de estado
                     )
                 }
             }
