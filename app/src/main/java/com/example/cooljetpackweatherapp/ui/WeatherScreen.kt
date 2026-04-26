@@ -1,8 +1,11 @@
 package com.example.cooljetpackweatherapp.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -12,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cooljetpackweatherapp.viewmodel.WeatherViewModel
 import dam_A51736.coolweatherapp.WMO_WeatherCode
@@ -134,4 +138,41 @@ fun LandscapeWeatherUI(
     onUpdateButtonClick: () -> Unit
 ) {
     // ToDo: Desenhar a interface em modo paisagem
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 64.dp), //dá um espaço de 64 dp no fim para não sobrepor-se à barra virtual do dispositivo
+        verticalAlignment = Alignment.CenterVertically, // Centra tudo verticalmente
+        horizontalArrangement = Arrangement.SpaceEvenly // Dá um espaço igual entre as colunas
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            WeatherCard(temperature = temperature, wIcon = wIcon, time = time)
+        }
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CoordinatesCard(
+                latitude = latitude,
+                longitude = longitude,
+                onLatitudeChange = onLatitudeChange,
+                onLongitudeChange = onLongitudeChange,
+                onUpdateButtonClick = onUpdateButtonClick
+            )
+
+            WeatherDetails(
+                windSpeed = windSpeed,
+                windDirection = windDirection,
+                seaLevelPressure = seaLevelPressure
+            )
+        }
+    }
 }

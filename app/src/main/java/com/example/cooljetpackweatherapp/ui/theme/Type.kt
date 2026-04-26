@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cooljetpackweatherapp.R
 import androidx.compose.ui.text.font.Font
 
-
+//Fonte Montserrat que foi descarregada da aplicação Google Fonts
 val fontMontserrat = FontFamily(
     Font(R.font.montserrat_variablefont_wght, FontWeight.Normal),
     Font(R.font.montserrat_bold, FontWeight.Bold)
