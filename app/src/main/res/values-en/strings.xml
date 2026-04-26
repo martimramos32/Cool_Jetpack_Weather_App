@@ -8,4 +8,5 @@
     <string name="direction_label">Wind Direction</string>
     <string name="pressure_label">Sea Level Pressure</string>
     <string name="last_update">Last update:</string>
+    <string name="coordinates_title">Coordinates</string>
 </resources>
