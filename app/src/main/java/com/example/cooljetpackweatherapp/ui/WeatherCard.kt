@@ -20,6 +20,7 @@ fun WeatherCard(temperature: Float, wIcon: Int, time: String) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Última atualização: $time", color = MaterialTheme.colorScheme.secondary)
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -34,8 +35,8 @@ fun WeatherCard(temperature: Float, wIcon: Int, time: String) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "${temperature}ºC",
+            style = MaterialTheme.typography.titleLarge,
             fontSize = 48.sp,
-            fontWeight = FontWeight.Bold
         )
     }
 }
