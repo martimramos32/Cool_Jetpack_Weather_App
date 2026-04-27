@@ -8,4 +8,6 @@
     <string name="pressure_label">Pressão Atmosférica</string>
     <string name="last_update">Última atualização:</string>
     <string name="coordinates_title">Coordenadas</string>
+    <string name="confirm_location">Confirmar Localização</string>>
+
 </resources>

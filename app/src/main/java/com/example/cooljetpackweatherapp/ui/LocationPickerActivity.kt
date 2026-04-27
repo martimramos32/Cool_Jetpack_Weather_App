@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cooljetpackweatherapp.R
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -64,7 +66,7 @@ class LocationPickerActivity : ComponentActivity() {
                             .padding(32.dp)
                             .fillMaxWidth()
                     ) {
-                        Text("Confirmar Localização")
+                        Text(stringResource(R.string.confirm_location))
                     }
                 }
             }
