@@ -21,7 +21,8 @@ fun CoordinatesCard(
     longitude: String,
     onLatitudeChange: (String) -> Unit,
     onLongitudeChange: (String) -> Unit,
-    onUpdateButtonClick: () -> Unit
+    onUpdateButtonClick: () -> Unit,
+    onMapIconClick: () -> Unit // Opção que permite o evento de clique no ícone do globo terreste
 ) {
     Card(
         modifier = Modifier
@@ -46,12 +47,14 @@ fun CoordinatesCard(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
-                // Ícone do Planeta Terra
-                Icon(
-                    imageVector = Icons.Default.Public,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                // Botão no ícone para lançar a atividade LocationPickerActivity
+                IconButton(onClick = onMapIconClick) {
+                    Icon(
+                        imageVector = Icons.Default.Public,
+                        contentDescription = "Abrir Mapa",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
 
             OutlinedTextField(

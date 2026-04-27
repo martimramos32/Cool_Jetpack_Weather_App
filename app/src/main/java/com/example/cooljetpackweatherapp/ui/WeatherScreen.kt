@@ -20,9 +20,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cooljetpackweatherapp.viewmodel.WeatherViewModel
 import dam_A51736.coolweatherapp.WMO_WeatherCode
 import dam_A51736.coolweatherapp.getWeatherCodeMap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import android.app.Activity
+import android.content.Intent
 
 
-//Função responsável por apresentar a UI no dispositivo
+//Função responsável por apresentar o layout principal da aplicação
 @Composable
 fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val weatherUIState by weatherViewModel.uiState.collectAsState()
@@ -36,12 +40,30 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
     val seaLevelPressure = weatherUIState.seaLevelPressure
     val time = weatherUIState.time
 
-    val configuration = LocalConfiguration.current
-    //val day = true // Must change this in the future
-    val day = weatherUIState.isDay
+    val context = LocalContext.current // Permite aceder ao contexto da aplicação
 
-    val mapt = getWeatherCodeMap()
-    val wCode = mapt[weathercode]
+    // O launcher que abre a janela e espera pela resposta do utilizador
+    val mapLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val lat = result.data?.getStringExtra("latitude")
+            val lon = result.data?.getStringExtra("longitude")
+
+            if (lat != null && lon != null) {
+                // Atualiza as caixas de texto na atividade principal
+                weatherViewModel.updateLatitude(lat)
+                weatherViewModel.updateLongitude(lon)
+            }
+        }
+    }
+
+    val configuration = LocalConfiguration.current // Permite aceder à configuração do dispositivo
+    //val day = true // Must change this in the future
+    val day = weatherUIState.isDay //variável dinâmica que muda consoante as horas de nascer e pôr do sol na localização selecionada pelo utilizador
+
+    val mapt = getWeatherCodeMap() //hashMap que contém os códigos e as respetivas imagens
+    val wCode = mapt[weathercode] //pega apenas no código da imagem
     val wImage = when (wCode) {
         WMO_WeatherCode.CLEAR_SKY,
         WMO_WeatherCode.MAINLY_CLEAR,
@@ -55,8 +77,7 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
         else -> wCode?.image ?: "cloudy"
     }
 
-    val context = LocalContext.current
-    val wIcon = context.resources.getIdentifier(wImage, "drawable", context.packageName)
+    val wIcon = context.resources.getIdentifier(wImage, "drawable", context.packageName) //mostra no layout a imagem correspondente à imagem do código processado
 
     //Se o dispositivo estiver em modo paisagem chama a função LandscapeWeatherUI, caso esteja em modo retrato chama a função PortraitWeatherUI
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -72,7 +93,12 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
             time = time,
             onLatitudeChange = { newValue -> weatherViewModel.updateLatitude(newValue) },
             onLongitudeChange = { newValue -> weatherViewModel.updateLongitude(newValue)},
-            onUpdateButtonClick = { weatherViewModel.fetchWeather() }
+            onUpdateButtonClick = { weatherViewModel.fetchWeather() },
+            //Opcional: ação de clicar no ícone do mapa
+            onMapIconClick = {
+                val intent = Intent(context, LocationPickerActivity::class.java)
+                mapLauncher.launch(intent)
+            }
         )
     } else {
         PortraitWeatherUI(
@@ -87,7 +113,12 @@ fun WeatherUI(weatherViewModel: WeatherViewModel = viewModel()) {
             time = time,
             onLatitudeChange = { newValue -> weatherViewModel.updateLatitude(newValue) },
             onLongitudeChange = { newValue -> weatherViewModel.updateLongitude(newValue)},
-            onUpdateButtonClick = { weatherViewModel.fetchWeather() }
+            onUpdateButtonClick = { weatherViewModel.fetchWeather() },
+            //Opcional: ação de clicar no ícone do mapa
+            onMapIconClick = {
+                val intent = Intent(context, LocationPickerActivity::class.java)
+                mapLauncher.launch(intent)
+            }
         )
     }
 }
@@ -99,7 +130,8 @@ fun PortraitWeatherUI(
     windSpeed: Float, windDirection: Int, weathercode: Int,
     seaLevelPressure: Float, time: String,
     onLatitudeChange: (String) -> Unit, onLongitudeChange: (String) -> Unit,
-    onUpdateButtonClick: () -> Unit
+    onUpdateButtonClick: () -> Unit,
+    onMapIconClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -116,7 +148,8 @@ fun PortraitWeatherUI(
             longitude = longitude,
             onLatitudeChange = onLatitudeChange,
             onLongitudeChange = onLongitudeChange,
-            onUpdateButtonClick = onUpdateButtonClick
+            onUpdateButtonClick = onUpdateButtonClick,
+            onMapIconClick = onMapIconClick
         )
 
         //O cartão com os detalhes recebidos da API
@@ -135,9 +168,10 @@ fun LandscapeWeatherUI(
     windSpeed: Float, windDirection: Int, weathercode: Int,
     seaLevelPressure: Float, time: String,
     onLatitudeChange: (String) -> Unit, onLongitudeChange: (String) -> Unit,
-    onUpdateButtonClick: () -> Unit
+    onUpdateButtonClick: () -> Unit,
+    onMapIconClick: () -> Unit
+
 ) {
-    // ToDo: Desenhar a interface em modo paisagem
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -165,7 +199,8 @@ fun LandscapeWeatherUI(
                 longitude = longitude,
                 onLatitudeChange = onLatitudeChange,
                 onLongitudeChange = onLongitudeChange,
-                onUpdateButtonClick = onUpdateButtonClick
+                onUpdateButtonClick = onUpdateButtonClick,
+                onMapIconClick = onMapIconClick
             )
 
             WeatherDetails(
