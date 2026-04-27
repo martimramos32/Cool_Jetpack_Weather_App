@@ -23,11 +23,11 @@ class LocationPickerActivity : ComponentActivity() {
             CoolJetpackWeatherAppTheme { // Para que esta nova atividade fique dentro dos temas usados na atividade principal
 
                 //Posição inicial:Lisboa
-                var selectedLocation by remember { mutableStateOf(LatLng(38.76, -9.12)) }
+                var posicaoSelecionada by remember { mutableStateOf(LatLng(38.76, -9.12)) }
 
                 //Controlador da câmara (zoom e posição)
                 val cameraPositionState = rememberCameraPositionState {
-                    position = CameraPosition.fromLatLngZoom(selectedLocation, 8f)
+                    position = CameraPosition.fromLatLngZoom(posicaoSelecionada, 8f)
                 }
 
                 //Desenhar o ecrã desta atividade
@@ -38,11 +38,11 @@ class LocationPickerActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         cameraPositionState = cameraPositionState,
                         // Quando clica-se no mapa, o pino muda de sítio
-                        onMapClick = { novaPosicao -> selectedLocation = novaPosicao }
+                        onMapClick = { novaPosicao -> posicaoSelecionada = novaPosicao }
                     ) {
                         // Desenha o pino vermelho na posição selecionada
                         Marker(
-                            state = MarkerState(position = selectedLocation),
+                            state = MarkerState(position = posicaoSelecionada),
                             title = "Local Escolhido"
                         )
                     }
@@ -52,11 +52,11 @@ class LocationPickerActivity : ComponentActivity() {
                         onClick = {
                             // Preparar as coordenadas
                             //A função do Intent é passar os dados desta atividade para a anterior(MainActivity)
-                            val resultIntent = Intent().apply {
-                                putExtra("latitude", selectedLocation.latitude.toString())
-                                putExtra("longitude", selectedLocation.longitude.toString())
+                            val resultadoIntent = Intent().apply {
+                                putExtra("latitude", posicaoSelecionada.latitude.toString())
+                                putExtra("longitude", posicaoSelecionada.longitude.toString())
                             }
-                            setResult(RESULT_OK, resultIntent)
+                            setResult(RESULT_OK, resultadoIntent)
                             finish() // Fecha o ecrã do mapa
                         },
                         modifier = Modifier
