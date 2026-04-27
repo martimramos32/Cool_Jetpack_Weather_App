@@ -2,7 +2,7 @@ package com.example.cooljetpackweatherapp.ui
 
 //Classe responsável por guardar os dados da UI
 data class WeatherUIState(
-    // Dados iniciais hardcoded para Lisboa para quando a aplicação inicia pela primeira vez
+    //Dados iniciais hardcoded para Lisboa(referentes ao exemplo no TP2) para quando a aplicação inicia pela primeira vez
     val latitude: String = "38.76",
     val longitude: String = "-9.12",
     val temperature: Float = 15.9f,
